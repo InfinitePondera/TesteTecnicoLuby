@@ -21,6 +21,7 @@ namespace VendingMachine
 
         public void ListCommands()
         {
+            int i = 0;
             try
             {
                 do
@@ -32,7 +33,8 @@ namespace VendingMachine
                     {
                         ListStock();
                         Console.WriteLine("Digite o ID da bebida desejada: ");
-                        DoSale(Console.Read());
+                        DoSale(Console.Read(), i);
+                        
                     }
                     else if (Console.Read() == 2)
                     {
@@ -76,21 +78,27 @@ namespace VendingMachine
             }
         }
 
-        public void DoSale(int option)
+        public void DoSale(int option, int iteration)
         {
             Console.WriteLine("O preço total é de: R$" + _stock[option].Product.Price);
             Console.WriteLine("Qual o valor que irá pagar?");
             var aux = Console.Read();
-            if (_stock[option].Product.Price == aux)
+            if (Math.Abs(_stock[option].Product.Price - aux) < 0)
             {
                 Console.WriteLine("Obrigado pela compra!");
                 _stock[option].Quantity--;
+                _sales[iteration].Id = iteration;
+                _sales[iteration].ValorVenda = _stock[option].Product.Price;
+                _sales[iteration].Date = DateTime.Now;
             }
             else
             {
                 Console.WriteLine("O seu troco será de: R$" + (aux - _stock[option].Product.Price));
                 Console.WriteLine("Obrigado pela compra!");
                 _stock[option].Quantity--;
+                _sales[iteration].Id = iteration;
+                _sales[iteration].ValorVenda = _stock[option].Product.Price;
+                _sales[iteration].Date = DateTime.Now;
             }
         }
         
